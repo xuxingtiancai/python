@@ -1,0 +1,44 @@
+numpy:matrix使用
+import numpy as np
+
+a = np.matrix([ [1, 2, 3, 4], 
+                       [5, 5, 6, 8],
+                       [7, 9, 9, 1],
+                       [4, 6, 7, 1] 
+                     ])
+
+#矩阵加减法：
+e = a + a
+#or
+e = a - a
+
+#矩阵乘法:
+b = a * a            
+#or
+c = np.dot(a, a)       
+#一维=点乘
+#二维=矩阵乘法 
+
+#转置矩阵(transpose)
+g = a.transpose()
+#or
+h = a.T           
+
+#逆矩阵(inverse)
+#The inverse of a matrix A is the matrix B such that AB=I where I is the identity matrix consisting of ones down the main diagonal. Usually B is denoted B=A-1 . 
+#In SciPy, the matrix inverse of the Numpy array, A, is obtained using linalg.inv (A) , or using A.I 
+f = np.linalg.inv(a)
+#or
+f = a ** (-1)
+#or
+f = a.I
+
+#行列式(determinant)
+j = np.linalg.det(a)
+
+#伴随矩阵(adjoint)
+#(need more test)
+m = np.dot(np.linalg.det(a), np.linalg.inv(a))# A-1 = A'' / |A|  ==>   A''= A-1|A|  
+
+#矩阵范数(matrix norms)
+k = np.linalg.norms(a)
