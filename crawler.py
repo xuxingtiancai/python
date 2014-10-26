@@ -1,5 +1,6 @@
-技术-python网页抓取
- #coding=gbk
+#利用splinter库可以在载入网页时执行javascript代码，从而得到最终展现的静态页面 
+
+#coding=gbk
 from splinter import Browser
 import os, sys, time
 
@@ -86,5 +87,3 @@ if __name__ == '__main__':
 	
 	fout.flush()
 	fout.close()
-
-利用splinter库可以在载入网页时执行javascript代码，从而得到最终展现的静态页面 
