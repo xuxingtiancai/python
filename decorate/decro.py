@@ -7,6 +7,7 @@ def hello_world_decro(fn):
         fn(*args)
     return wrapper
 
+#闭包中存放变量
 def immutable_member_decro(fn):
     def wrapper(*args):
         wrapper.counter += 1
@@ -15,6 +16,7 @@ def immutable_member_decro(fn):
     wrapper.counter = 0
     return wrapper
 
+#函数对象的局部变量
 def mutable_member_decro(fn):
     counter = []
     def wrapper(*args):
