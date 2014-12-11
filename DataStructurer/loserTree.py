@@ -5,19 +5,19 @@ class LoserTree:
             self.qid = qid
             self.v = v
 
-        def __lt__(self, other):
-            if self.v == other.v:
-                return self.qid < other.qid
-            if lt(self.v, other.v):
-                return True
-            return False
-
-    def __init__(self, size):
+    def __init__(self, size, beat_value):
+        if size <= 0:
+            raise Exception('invalid para, size')
         self.size = size
         self.nodes = [None] * size
+        self.beat_value = beat_value
     
     def getWinner(self):
         return self.nodes[0]
+    
+    #n1 beat n2   
+    def beat_node(self, n1, n2):
+        return self.beat_value(n1.v, n2.v)
 
     def insert(self, v):
         win_qid = self.nodes[0].qid
@@ -25,7 +25,7 @@ class LoserTree:
         cur = (win_qid + self.size) / 2
 
         while cur > 0:
-            if self.lt(player, self.nodes[cur]):
+            if self.beat_node(self.nodes[cur], player):
                 self.nodes[cur], player = player, self.nodes[cur]
             cur /= 2
         self.nodes[0] = player
@@ -38,25 +38,13 @@ class LoserTree:
 
         left_winner = self.build_pos(array, 2 * pos)
         right_winner = self.build_pos(array, 2 * pos + 1)
-        winner, loser = left_winner, right_winner
-        if self.lt(left_winner, right_winner):
+        if self.beat_node(right_winner, left_winner):
             winner, loser = right_winner, left_winner
+        else:
+            winner, loser = left_winner, right_winner
 
         self.nodes[pos] = loser
         return winner
 
     def build(self, array):
         self.nodes[0] = self.build_pos(array, 1)
-
-#application
-def find_min_k(array, k):
-    tree = LoserTree(k+1)
-    tree.build(array[:k+1])
-    for i in array[k+1:]:
-        tree.insert(i)
-
-    print max(n.v for n in tree.nodes[1: k+1])
-
-
-if __name__ == '__main__':
-    find_k(range(100)[::-1], 7)
