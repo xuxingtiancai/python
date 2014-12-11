@@ -45,13 +45,13 @@ class LoserTree:
 
 #application
 def find_k(array, k):
-    tree = LoserTree(k)
-    tree.build(array[:k])
-    for i in array[k:]:
+    tree = LoserTree(k+1)
+    tree.build(array[:k+1])
+    for i in array[k+1:]:
         tree.insert(i)
 
-    print tree.getWinner().v
+    print max(n.v for n in tree.nodes[1: k+1])
 
 
 if __name__ == '__main__':
-    find_k(range(100), 7)
+    find_k(range(100)[::-1], 7)
