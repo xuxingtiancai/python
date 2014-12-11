@@ -1,3 +1,5 @@
+#
+
 class LoserTree:
     class Node:
         def __init__(self, qid, v):
@@ -5,6 +7,7 @@ class LoserTree:
             self.v = v
 
     def __init__(self, size):
+        self.size = size
         self.nodes = [None] * size
     
     def getWinner(self):
@@ -12,29 +15,42 @@ class LoserTree:
 
     def insert(self, v):
         win_qid = self.nodes[0].qid
-        player = Node(win_qid, v)
+        player = LoserTree.Node(win_qid, v)
         cur = win_qid / 2
 
         while cur > 0:
-            if self.nodes[cur].v < player.v:
+            if self.nodes[cur].v > player.v:
                 self.nodes[cur], player = player, self.nodes[cur]
             cur /= 2
         self.nodes[0] = player
+        print [n.v for n in self.nodes]
         return player.qid
 
+    def build_pos(self, array, pos):
+        if pos >= self.size:
+            pos -= self.size
+            return LoserTree.Node(pos, array[pos])
+
+        left_winner = self.build_pos(array, 2 * pos)
+        right_winner = self.build_pos(array, 2 * pos + 1)
+        winner, loser = left_winner, right_winner
+        if left_winner.v < right_winner.v:
+            winner, loser = right_winner, left_winner
+
+        self.nodes[pos] = loser
+        return winner
+
     def build(self, array):
-        for i in range(self.size)[::-1]:
-            left = self.nodes[2 * i]
-            right = self.nodes[2 * i + 1]
+        self.nodes[0] = self.build_pos(array, 1)
 
 #application
 def find_k(array, k):
-    tree = LoserTree()
+    tree = LoserTree(k)
     tree.build(array[:k])
     for i in array[k:]:
         tree.insert(i)
 
-    print tree.winner().v
+    print tree.getWinner().v
 
 
 if __name__ == '__main__':
