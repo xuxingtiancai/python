@@ -1,17 +1,26 @@
-from multiprocessing import Process
-import os
+from multiprocessing import Process, Queue, JoinableQueue
+import os, time, random
 
+def write(q):
+    num = 0
+    while(True):
+        q.put(num)
+        num += 1
+        time.sleep(0.2)
 
-
-
-def run_proc(name, L):
-    print 'Run child process %s (%s)...' % (name, os.getpid())
-    L.append(4)
-    print L
+def read(q):
+    while True:
+        value = q.get()
+        print 'Get %s from queue.' % value
+        q.task_done()
+        time.sleep(0.3)
 
 if __name__=='__main__':
-    L = [1, 2, 3]
-    p = Process(target=run_proc, args=('test', L))
-    p.start()
-    p.join()
-    print L
+    q = JoinableQueue()
+    pw = Process(target=write, args=(q,))
+    pr = Process(target=read, args=(q,))
+    pw.daemon = True
+    pr.daemon = True
+    pw.start(); time.sleep(1)
+    pr.start()
+    q.join()
