@@ -1,6 +1,9 @@
 from multiprocessing import Process
 import os
 
+
+
+
 def run_proc(name, L):
     print 'Run child process %s (%s)...' % (name, os.getpid())
     L.append(4)
