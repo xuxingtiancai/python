@@ -20,4 +20,11 @@ logging.error(e, exc_info=1)
 goods_redis = redis.StrictRedis(host, port, db=0)
 redis_value = goods_redis.get(key)
 
-#
+#proto
+#dump
+pb_obj.SerializeToString()
+#load
+pb_obj.ParseFromString(content)
+
+repeat_obj.add()
+repeat_base_obj.append()
