@@ -98,8 +98,7 @@ class Async_Handler(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def communicate(self, arg):
         stream = yield self.connect()
-        msg = make_request(sku_id)
-        yield stream.write(proxy_packed_req_str)
+        yield stream.write(msg)
         head = yield stream.read_bytes(4)
         size,= struct.unpack('!i', head)
         body = yield stream.read_bytes(size)
