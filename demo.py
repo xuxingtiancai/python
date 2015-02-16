@@ -28,3 +28,8 @@ pb_obj.ParseFromString(content)
 
 repeat_obj.add()
 repeat_base_obj.append()
+
+#time
+strftime(format, time)
+strptime(string, format)
+time.ctime(s数)
