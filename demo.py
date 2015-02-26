@@ -30,6 +30,11 @@ repeat_obj.add()
 repeat_base_obj.append()
 
 #time
-strftime(format, time)
-strptime(string, format)
+#时间->字符串
+strftime('%Y%m%d %H%M%S', time)
+#字符串->时间
+strptime(string, '%Y%m%d %H%M%S')
+
+#秒数->时间
 time.ctime(s数)
+time.localtime(s数)
