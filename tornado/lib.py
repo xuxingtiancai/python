@@ -1,2 +1,5 @@
 #周期性任务
-ioloop.PeriodicCallback(like_cron, period).start()  # start scheduler
+ioloop.PeriodicCallback(func, period).start()  # start scheduler
+
+#cache
+LRU_cache
