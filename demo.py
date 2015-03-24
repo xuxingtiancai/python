@@ -6,6 +6,8 @@ os.walk().next()
 #config
 config = ConfigParser.RawConfigParser()
 config.read('test.conf')
+hadoop = config.get('hadoop', 'hadoop')
+dt_span = config.getint('accumulate', 'dt_span')
 
 #logging
 h = logging.handlers.RotatingFileHandler('log', maxBytes = 102400000, backupCount = 30)
