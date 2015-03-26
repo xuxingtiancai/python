@@ -40,3 +40,10 @@ strptime(string, '%Y%m%d %H%M%S')
 #秒数->时间
 time.ctime(s数)
 time.localtime(s数)
+
+#分组
+def grouper(n, iterable, fillvalue=None):
+  args = [iter(iterable)] * n 
+  return izip_longest(fillvalue=fillvalue, *args)
+
+for group in grouper(block_size, sys.stdin):
