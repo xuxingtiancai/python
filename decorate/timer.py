@@ -13,15 +13,13 @@ def timer(fn):
     
 def timer_yield(fn):
     def wrapper(*args):
-        g = fn(*args)
-        while True:
-            try:
-                start = time.time()
-                result = g.next()
-                end = time.time()
-                wrapper.cost += end - start
-                yield result
-            except StopIteration, e:
-                raise StopIteration
+        start = time.time()
+        for i in fn(*args):
+            end = time.time()
+            wrapper.cost += end - start
+            yield i
+            start = time.time()
+        end = time.time()
+        wrapper.cost += end - start
     wrapper.cost = 0
     return wrapper
