@@ -1,7 +1,8 @@
 __author__ = 'xuxing'
 from functools import wraps
 
-def hello_world_decro(fn):
+#普通装饰器
+def Decro(fn):
     def wrapper(*args):
         print 'hello_world_decro'
         fn(*args)
@@ -30,7 +31,7 @@ def func():
     print 'func'
     
 #类装饰器
-def Tracer(aClass):
+def DecroForCls(aClass):
     class Wrapper:
         def __init__(self,*args,**kargs):
             self.fetches = 0
@@ -42,7 +43,7 @@ def Tracer(aClass):
     return Wrapper
 
 #带参数的装饰器
-def collect(aggr, initial):
+def ArgDecroForFunc(aggr, initial):
     def collect_main(fn):
         def wrapper(*args):
             return reduce(aggr, fn(*args), initial)
@@ -50,7 +51,18 @@ def collect(aggr, initial):
     return collect_main
     
 #类作为装饰器
+class ClsDecroForFunc:
+    def __init__(self, func):
+        self._func = func
+        self._arg = arg
 
+    def __call__(self):
+        print ('class decorator runing')
+        self._func()
+        print ('class decorator ending')
 
 if __name__ == '__main__':
     func()
+
+#参考链接
+http://www.jb51.net/article/63892.htm
