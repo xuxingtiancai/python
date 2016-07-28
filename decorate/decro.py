@@ -1,7 +1,7 @@
 __author__ = 'xuxing'
 from functools import wraps
 
-#普通装饰器
+#1.1 函数-> 函数
 def Decro(fn):
     def wrapper(*args):
         print 'hello_world_decro'
@@ -29,37 +29,67 @@ def mutable_member_decro(fn):
 @mutable_member_decro
 def func():
     print 'func'
-    
-#类装饰器
-def DecroForCls(aClass):
-    class Wrapper:
-        def __init__(self,*args,**kargs):
-            self.fetches = 0
-            self.wrapped = aClass(*args,**kargs)
-        def __getattr__(self,attrname):
-            print('Trace:'+attrname)
-            self.fetches += 1
-            return getattr(self.wrapped,attrname)
-    return Wrapper
 
-#带参数的装饰器
+#1.2 函数 -> 函数 (带参数)
 def ArgDecroForFunc(aggr, initial):
     def collect_main(fn):
         def wrapper(*args):
             return reduce(aggr, fn(*args), initial)
         return wrapper
     return collect_main
-    
-#类作为装饰器
+        
+#2 函数 -> 类 (带参数)
+def test(printValue=True):
+    def _test(cls):
+        def __test(*args,**kw):
+            clsName=re.findall('(\w+)',repr(cls))[-1]
+            print 'Call %s.__init().'%clsName
+            obj=cls(*args,**kw)
+            if printValue:
+                print 'value = %r'%obj.value
+            return obj
+        return __test
+    return _test
+
+@test()
+class sy(object):
+    def __init__(self,value):
+        self.value=value
+
+#3 类 -> 函数 (带参数)
 class ClsDecroForFunc:
-    def __init__(self, func):
-        self._func = func
+    def __init__(self, arg):
         self._arg = arg
 
-    def __call__(self):
-        print ('class decorator runing')
-        self._func()
-        print ('class decorator ending')
+    def __call__(self, func):
+        self._func = func
+        return self._call
+    
+    def _call(self, *args, **kwargs):
+        print 'ClsDecroForFunc', self._arg
+        self._func(*args)
+        
+#4 类 -> 类 (带参数)
+class test(object):
+    def __init__(self,printValue=False):
+        self._printValue=printValue
+    
+    def __call__(self, cls):
+        self._cls = cls
+        return self._call
+        
+    def _call(self, *args,**kw):
+        obj = self._cls(*args,**kw)
+        if self._printValue:
+            print 'value = %r' % obj.value
+        return obj
+    
+@test(True)
+class sy(object):
+    def __init__(self,value):
+        #The parameters of _call can be '(value)' in this case.
+        self.value=value
+
 
 if __name__ == '__main__':
     func()
