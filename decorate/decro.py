@@ -28,8 +28,29 @@ def mutable_member_decro(fn):
 @mutable_member_decro
 def func():
     print 'func'
+    
+#类装饰器
+def Tracer(aClass):
+    class Wrapper:
+        def __init__(self,*args,**kargs):
+            self.fetches = 0
+            self.wrapped = aClass(*args,**kargs)
+        def __getattr__(self,attrname):
+            print('Trace:'+attrname)
+            self.fetches += 1
+            return getattr(self.wrapped,attrname)
+    return Wrapper
+
+#带参数的装饰器
+def collect(aggr, initial):
+    def collect_main(fn):
+        def wrapper(*args):
+            return reduce(aggr, fn(*args), initial)
+        return wrapper
+    return collect_main
+    
+#类作为装饰器
 
 
 if __name__ == '__main__':
-    func()
     func()
