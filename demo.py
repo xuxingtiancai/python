@@ -15,8 +15,16 @@ h.setLevel(logging.ERROR)
 root_logger = logging.getLogger('root')
 root_logger.addHandler(h)
 root_logger.setLevel(logging.ERROR)
-
 logging.error(e, exc_info=1)
+
+#logging格式
+logger = logging.getLogger('')
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('[%(asctime)s][%(name)s][%(levelname)s]%(message)s')
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 #redis
 goods_redis = redis.StrictRedis(host, port, db=0)
