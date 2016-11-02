@@ -8,7 +8,7 @@ os.system('python Exe.py Main.py args[]')
 #内部执行：
 if __name__ == '__main__':
     if sys.argv[0].endswith('.py'):
-        os.system('python [py2exe]/Exe.py Main.py %s' % ' '.join(sys.argv[1:]))
+        os.system('python [py2exe]/Exe.py {0} {1}'.format(os.path.relpath(__file__), ' '.join(sys.argv[1:]))
     else:
         main()
 
