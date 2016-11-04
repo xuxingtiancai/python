@@ -1,27 +1,41 @@
-#coding=gbk
 
-import os
-import sys
+def pyinstaller(files, **kwargs):
+    mainfile = files[0]
+    paras = kwargs.get('paras', [])
+    key = os.path.basename(mainfile)[:-3]
+    sys_dir = os.getcwd()
+    exe_dir = '[pyinstaller]/{0}'.format(key)
+    if not os.path.exists(exe_dir):
+        os.makedirs(exe_dir)
 
-if len(sys.argv) >= 2:
-    c_Target = sys.argv[1]
-else:
-    #c_Target = 'src.cleaner\Filter.py'
-    c_Target = 'Stat2.py'
+    files_str = ' '.join(os.path.join(sys_dir, f) for f in files)
+    exe('cd {0} && pyinstaller -F {1}'.format(exe_dir, files_str))
+    paras_str = ' '.join(paras)
+    exe('{0}/dist/{1}.exe {2}'.format(exe_dir, key, paras_str))
 
-c_Target_abs = os.path.join(os.getcwd(), c_Target)
-c_Key = os.path.basename(c_Target)[:-3]
-c_Py2exeDir = '[py2exe]\%s' % (c_Key)
-c_SetupPy = 'setup.py'
-c_Exe = '%s\dist\%s.exe %s' % (c_Py2exeDir, c_Key, ' '.join(sys.argv[2:]))
+def py2exe(files, **kwargs):
+    mainfile = files[0]
+    paras = kwargs.get('paras', [])
+    key = os.path.basename(mainfile)[:-3]
+    sys_dir = os.getcwd()
+    exe_dir = '[py2exe]/{0}'.format(key)
+    if not os.path.exists(exe_dir):
+        os.makedirs(exe_dir)
+    c_SetupPy = 'setup.py'
 
-if not os.path.exists(c_Py2exeDir):
-    os.makedirs(c_Py2exeDir)
+    with open(os.path.join(exe_dir, c_SetupPy), 'w') as fout:
+        print >>fout, 'from distutils.core import setup'
+        print >>fout, 'import py2exe'
+        files_str = ','.join('"%s"' % os.path.join(sys_dir, f) for f in files)
+        print >>fout, 'setup(console=[%s])' % files_str
 
-with open(os.path.join(c_Py2exeDir, c_SetupPy), 'w') as fout:
-    print >>fout, 'from distutils.core import setup'
-    print >>fout, 'import py2exe'
-    print >>fout, 'setup(console=["%s"])' % c_Target_abs
-
-os.system('cd %s && python %s py2exe' % (c_Py2exeDir, c_SetupPy))
-os.system(c_Exe)
+    exe('cd {0} && python {1} py2exe'.format(exe_dir, c_SetupPy))
+    paras_str = ' '.join(paras)
+    exe('{0}/dist/{1}.exe {2}'.format(exe_dir, key, paras_str))
+    
+    
+if __name__ == '__main__':
+    if sys.argv[0].endswith('.py'):
+        util.pyinstaller([os.path.relpath(__file__), 'util.py'])
+    else:
+        main()
