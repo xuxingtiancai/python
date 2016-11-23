@@ -14,6 +14,7 @@ operator
 高阶函数
 
 装饰器
+计时功能
 
 系统功能
 py2exe
@@ -22,3 +23,5 @@ py2exe
 网页抓取
 urllib bs4
 splinter
+
+pynq
