@@ -54,6 +54,16 @@ def memo_key(key_func):
         wrapper.cache = dict()
         return wrapper
     return main
+
+#单例模式
+def singleton(cls):
+    instances = {}
+    def _wrapper(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    return _wrapper
+
 #收集器
 def collector(c_func):
     def main(fn):
