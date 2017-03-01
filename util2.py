@@ -35,3 +35,9 @@ def py2exe(files, **kwargs):
     os.system('cd {0} && python {1} py2exe'.format(exe_dir, c_SetupPy))
     paras_str = ' '.join(paras)
     os.system('{0}/dist/{1}.exe {2}'.format(exe_dir, key, paras_str))
+
+def main():
+    if sys.argv[0].endswith('.py') and c_Exe_Switch:
+        util2.pyinstaller([os.path.relpath(__file__)])
+    else:
+        your code
