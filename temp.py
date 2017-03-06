@@ -1,9 +1,8 @@
-def decro(cls):
-    def func(self):
-        print 'hello world'
-    cls.func = func
-    return cls
-
-@decro
-class A:
-    pass
+def log(func):
+    def wrapper(*args, **kw):
+        print 'call %s():' % func.__name__
+        return func(*args, **kw)
+    return wrapper
+@log
+def now():
+    print '2013-12-25'
