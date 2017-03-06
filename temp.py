@@ -1,14 +1,15 @@
-class ContextController:
-    def __init__(self, name, value):
-        self.name = name
-        self.value = value
-        self.old_value = globals()[name]
-    def __enter__(self):
-        globals()[self.name] = self.value
-	  return self
-    def __exit__(self, exc_type, exc_value, exc_tb):
-        globals()[self.name] = self.old_value
+class MyDecorator(object):
+    def __init__(self, arg):
+        self.arg = arg
 
-with ContextController('c_NoTargetCardRatio', 0) as context:
-    response = self.GetPostRun(r'我想听音乐')
-    self.assertTrue(response.ReplyText is not None)
+    def __call__(self, fn):
+        @functools.wraps(fn)
+        def decorated(*args, **kwargs):
+            print "In my decorator before call, with arg %s" % self.arg
+            fn(*args, **kwargs)
+            print "In my decorator after call, with arg %s" % self.arg
+        return decorated
+
+@MyDecorator('arg')
+def f():
+    print "f"
