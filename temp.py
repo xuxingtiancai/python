@@ -1,15 +1,8 @@
-class MyDecorator(object):
-    def __init__(self, arg):
-        self.arg = arg
-
-    def __call__(self, fn):
-        @functools.wraps(fn)
-        def decorated(*args, **kwargs):
-            print "In my decorator before call, with arg %s" % self.arg
-            fn(*args, **kwargs)
-            print "In my decorator after call, with arg %s" % self.arg
-        return decorated
-
-@MyDecorator('arg')
-def f():
-    print "f"
+def deco(arg):  
+def _deco(func):  
+def __deco():  
+print("before %s called [%s]." % (func.__name__, arg))  
+func()  
+print("  after %s called [%s]." % (func.__name__, arg))  
+return __deco  
+return _deco
