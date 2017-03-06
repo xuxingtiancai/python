@@ -1,8 +1,7 @@
-def log(func):
-    def wrapper(*args, **kw):
-        print 'call %s():' % func.__name__
-        return func(*args, **kw)
-    return wrapper
-@log
-def now():
-    print '2013-12-25'
+def perms(elements):
+	if len(elements) <=1:
+    		yield elements
+	else:
+    		for perm in perms(elements[1:]):
+        			for i in range(len(elements)):
+            				yield perm[:i] + elements[0:1] + perm[i:]
